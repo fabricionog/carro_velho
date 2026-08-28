@@ -1,16 +1,28 @@
+from concurrent.futures import ThreadPoolExecutor
 import requests
 from django.shortcuts import render
 
-# Create your views here.
+
+def fetch_pokemon_detail(pokemon_data):
+    response = requests.get(pokemon_data["url"])
+    detalhes = response.json()
+
+    try:
+        detalhes["official_artwork"] = detalhes["sprites"]["other"][
+            "official-artwork"
+        ]["front_default"]
+    except (KeyError, TypeError):
+        detalhes["official_artwork"] = detalhes["sprites"]["front_default"]
+
+    return detalhes
 
 
 def index(request):
-    url = 'https://pokeapi.co/api/v2/pokemon?limit=20'
+    url = "https://pokeapi.co/api/v2/pokemon?limit=30"
     response = requests.get(url)
-    dados = response.json()
-    pokemons = []
-    for pokemon in dados['results']:
-        response_pokemon = requests.get(pokemon["url"])
-        detalhes = response_pokemon.json()
-        pokemons.append(detalhes)
-    return render(request, 'index.html', {"pokemon": pokemons})
+    results = response.json().get("results", [])
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        pokemons = list(executor.map(fetch_pokemon_detail, results))
+
+    return render(request, "index.html", {"pokemon": pokemons})
