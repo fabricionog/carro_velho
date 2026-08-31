@@ -1,3 +1,137 @@
-.img-fluid {
-    width: 20px;
+/* ==========================================================================
+   Estilização dos Cards e Modais da Pokédex
+   ========================================================================== */
+
+/* 1. Efeitos e Dimensões dos Cards */
+.pokemon-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 16px;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 2. Imagens Ajustadas */
+.pokemon-img-sm {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.pokemon-img-lg {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    filter: drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.15));
+}
+
+/* 3. Transição Suave das Barras de Estatísticas */
+.progress-bar-animated-width {
+    transition: width 0.8s ease-in-out;
+    border-radius: 4px;
+}
+
+/* 4. Cores Dinâmicas para os Tipos (Badges) */
+.type-badge {
+    color: #fffefe !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
+}
+
+/* Mapeamento de cores por tipo */
+.bg-type-grass,
+.bg-type-Grass {
+    background-color: #78C850 !important;
+}
+
+.bg-type-fire,
+.bg-type-Fire {
+    background-color: #F08030 !important;
+}
+
+.bg-type-water,
+.bg-type-Water {
+    background-color: #6890F0 !important;
+}
+
+.bg-type-bug,
+.bg-type-Bug {
+    background-color: #A8B820 !important;
+}
+
+.bg-type-normal,
+.bg-type-Normal {
+    background-color: #A8A878 !important;
+}
+
+.bg-type-poison,
+.bg-type-Poison {
+    background-color: #A040A0 !important;
+}
+
+.bg-type-electric,
+.bg-type-Electric {
+    background-color: #F8D030 !important;
+    color: #000 !important;
+}
+
+.bg-type-ground,
+.bg-type-Ground {
+    background-color: #E0C068 !important;
+}
+
+.bg-type-fairy,
+.bg-type-Fairy {
+    background-color: #EE99AC !important;
+}
+
+.bg-type-fighting,
+.bg-type-Fighting {
+    background-color: #C03028 !important;
+}
+
+.bg-type-psychic,
+.bg-type-Psychic {
+    background-color: #F85888 !important;
+}
+
+.bg-type-rock,
+.bg-type-Rock {
+    background-color: #B8A038 !important;
+}
+
+.bg-type-ghost,
+.bg-type-Ghost {
+    background-color: #705898 !important;
+}
+
+.bg-type-ice,
+.bg-type-Ice {
+    background-color: #98D8D8 !important;
+    color: #000 !important;
+}
+
+.bg-type-dragon,
+.bg-type-Dragon {
+    background-color: #7038F8 !important;
+}
+
+.bg-type-dark,
+.bg-type-Dark {
+    background-color: #705848 !important;
+}
+
+.bg-type-steel,
+.bg-type-Steel {
+    background-color: #B8B8D0 !important;
+}
+
+.bg-type-flying,
+.bg-type-Flying {
+    background-color: #A890F0 !important;
 }

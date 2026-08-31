@@ -2,7 +2,14 @@
 {% load static %}
 
 {% block content %}
-<main class="container py-4 py-md-5">
+<style>
+    /* Transição suave para o preenchimento das barras */
+    .progress-bar-animated-width {
+        transition: width 0.8s ease-in-out;
+    }
+</style>
+
+<main class="container py-4 py-md-5 bg-white">
     <!-- Hero Section -->
     <section class="hero rounded-4 bg-danger p-4 p-md-5 mb-4 mb-md-5 text-white shadow-sm">
         <div class="row align-items-center g-4">
@@ -25,21 +32,30 @@
             </span>
         </div>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+        <!-- Grid mais compacto: até 6 colunas por linha -->
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-2 g-md-3 bg-danger">
             {% for poke in pokemon %}
             <div class="col">
-                <!-- Card acionador do Modal -->
+                <!-- Card Compacto -->
                 <div class="card h-100 text-center shadow-sm pokemon-card border-0" data-bs-toggle="modal"
                     data-bs-target="#pokemonModal{{ poke.id }}">
 
-                    <div class="card-body d-flex flex-column align-items-center p-3">
-                        <span class="badge bg-secondary mb-1">#{{ poke.id|stringformat:"03d" }}</span>
-                        <img src="{{ poke.sprites.front_default }}" alt="{{ poke.name }}" class="pokemon-img my-1">
-                        <h5 class="card-title text-capitalize fw-bold fs-6 mb-2">{{ poke.name }}</h5>
+                    <div class="card-body d-flex flex-column align-items-center p-2">
+                        <span class="badge bg-dark mb-1" style="font-size: 0.7rem;">
+                            #{{ poke.id|stringformat:"03d" }}
+                        </span>
 
-                        <div class="d-flex justify-content-center gap-1 mt-auto">
+                        <img src="{{ poke.image }}" alt="{{ poke.name }}" class="pokemon-img-sm my-1">
+
+                        <h5 class="card-title text-capitalize fw-bold fs-6 mb-1 text-truncate w-100">
+                            {{ poke.name }}
+                        </h5>
+
+                        <div class="d-flex justify-content-center gap-1 mt-auto flex-wrap">
                             {% for type_info in poke.types %}
-                            <span class="badge bg-danger text-uppercase type-badge">{{ type_info.type.name }}</span>
+                            <span class="badge bg-type-{{ type_info.type.name }} text-uppercase type-badge">
+                                {{ type_info.type.name }}
+                            </span>
                             {% endfor %}
                         </div>
                     </div>
@@ -50,8 +66,8 @@
                     aria-labelledby="modalLabel{{ poke.id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content text-dark">
-                            <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title text-capitalize fw-bold" id="modalLabel{{ poke.id }}">
+                            <div class="modal-header bg-danger text-white py-2">
+                                <h5 class="modal-title text-capitalize fw-bold fs-6" id="modalLabel{{ poke.id }}">
                                     #{{ poke.id|stringformat:"03d" }} - {{ poke.name }}
                                 </h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -61,7 +77,7 @@
                                 <img src="{{ poke.official_artwork }}" alt="{{ poke.name }}"
                                     class="pokemon-img-lg mb-3">
 
-                                <div class="row text-start mt-3">
+                                <div class="row text-start mt-3 small">
                                     <div class="col-6">
                                         <p class="mb-1"><strong>Altura:</strong> {{ poke.height }}</p>
                                         <p class="mb-1"><strong>Peso:</strong> {{ poke.weight }}</p>
@@ -72,25 +88,27 @@
                                     </div>
                                 </div>
 
-                                <hr>
+                                <hr class="my-2">
 
                                 <h6 class="fw-bold text-start mb-2">Estatísticas:</h6>
                                 {% for stat in poke.stats %}
                                 {% widthratio stat.base_stat 200 100 as stat_width %}
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="text-capitalize">{{ stat.stat.name }}</small>
-                                    <div class="progress w-50" style="height: 10px;">
-                                        <div class="progress-bar bg-danger" role="progressbar"
-                                            style="--stat-width: {{ stat_width }}%; width: var(--stat-width);"
+                                <div class="d-flex align-items-center mb-1">
+                                    <small class="text-capitalize text-start w-25 me-2" style="font-size: 0.75rem;">{{ stat.stat.name }}</small>
+                                    <span class="fw-bold me-2 small text-end"
+                                        style="width: 30px; font-size: 0.75rem;">{{ stat.base_stat }}</span>
+                                    <div class="progress flex-grow-1" style="height: 8px;">
+                                        <div class="progress-bar bg-danger progress-bar-animated-width"
+                                            role="progressbar" style="width: 0%;" data-stat-width="{{ stat_width }}"
                                             aria-valuenow="{{ stat.base_stat }}" aria-valuemin="0" aria-valuemax="200">
-                                            {{ stat.base_stat }}
                                         </div>
                                     </div>
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <div class="modal-footer py-1">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    data-bs-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                     </div>
@@ -104,4 +122,24 @@
         </div>
     </section>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dispara a animação quando o modal for aberto
+        document.querySelectorAll('.modal').forEach(function (modalElement) {
+            modalElement.addEventListener('shown.bs.modal', function () {
+                modalElement.querySelectorAll('[data-stat-width]').forEach(function (bar) {
+                    bar.style.width = bar.dataset.statWidth + '%';
+                });
+            });
+
+            // Reseta a largura para 0% ao fechar, permitindo reanimar na próxima abertura
+            modalElement.addEventListener('hidden.bs.modal', function () {
+                modalElement.querySelectorAll('[data-stat-width]').forEach(function (bar) {
+                    bar.style.width = '0%';
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}
