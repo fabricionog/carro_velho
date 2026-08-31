@@ -53,6 +53,7 @@
 
                         <div class="d-flex justify-content-center gap-1 mt-auto flex-wrap">
                             {% for type_info in poke.types %}
+
                             <span class="badge bg-type-{{ type_info.type.name }} text-uppercase type-badge">
                                 {{ type_info.type.name }}
                             </span>
@@ -94,7 +95,8 @@
                                 {% for stat in poke.stats %}
                                 {% widthratio stat.base_stat 200 100 as stat_width %}
                                 <div class="d-flex align-items-center mb-1">
-                                    <small class="text-capitalize text-start w-25 me-2" style="font-size: 0.75rem;">{{ stat.stat.name }}</small>
+                                    <small class="text-capitalize text-start w-25 me-2" style="font-size: 0.75rem;">{{
+                                        stat.stat.name }}</small>
                                     <span class="fw-bold me-2 small text-end"
                                         style="width: 30px; font-size: 0.75rem;">{{ stat.base_stat }}</span>
                                     <div class="progress flex-grow-1" style="height: 8px;">
