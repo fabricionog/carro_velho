@@ -95,8 +95,7 @@
                                 {% for stat in poke.stats %}
                                 {% widthratio stat.base_stat 200 100 as stat_width %}
                                 <div class="d-flex align-items-center mb-1">
-                                    <small class="text-capitalize text-start w-25 me-2" style="font-size: 0.75rem;">{{
-                                        stat.stat.name }}</small>
+                                    <small class="text-capitalize text-start w-25 me-2" style="font-size: 0.75rem;">{{ stat.stat.name }}</small>
                                     <span class="fw-bold me-2 small text-end"
                                         style="width: 30px; font-size: 0.75rem;">{{ stat.base_stat }}</span>
                                     <div class="progress flex-grow-1" style="height: 8px;">
